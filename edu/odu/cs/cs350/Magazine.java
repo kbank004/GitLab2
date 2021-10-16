@@ -157,4 +157,4 @@ public class Magazine implements Cloneable {
 
 }
 
-// This is from master
+// This is from testBranch
