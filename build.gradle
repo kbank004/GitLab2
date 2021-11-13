@@ -33,10 +33,12 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'CS350.GitAsst.App'
+    mainClass = ""
 }
+
 
 tasks.named('test') {
     // Use junit platform for unit tests.
+    ignoreFailures = true
     useJUnitPlatform()
 }
