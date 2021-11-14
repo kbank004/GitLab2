@@ -46,19 +46,21 @@ test {
 
 
 task reports(){
-    onlyIf {test.state.didWork}
-    onlyIf {javadoc.state.didWork}
+    dependsOn 'test'
+    dependsOn 'javadoc'
+
 }
 task deployReports(){
-    onlyIf {reports.task.executed}
+    dependsOn 'reports'
     dependsOn 'copyReports'
-    dependsOn 'updateGHPages'
+    //dependsOn 'updateGHPages'
 
 }
 
 
 task clonePages() {
     doLast {
+        
         mkdir 'build/gh-pages'
         def thisRepo = rootProject.projectDir.toString()
         def pagesDir = "$buildDir/gh-pages"
@@ -78,9 +80,18 @@ task clonePages() {
 }
 
 
-task copyReports (type: Copy, dependsOn: ['clonePages']) {
-    from "$buildDir/docs/javadocs"
+task copyReports (dependsOn: ['clonePages']) {
+    doLast{
+    copy {
+    from "$buildDir/docs/javadoc"
     into "$buildDir/gh-pages"
+    }
+
+    copy {
+    from "$buildDir/reports"
+    into "$buildDir/gh-pages/reports"
+    }
+    }
 }
 
 task updateGHPages (dependsOn: 'copyReports') {
@@ -93,7 +104,7 @@ task updateGHPages (dependsOn: 'copyReports') {
         }
         grgit.add (update: false, patterns: ['reports/'])
         grgit.add (update: true, patterns: ['reports/'])
-		grgit.add (update: false, patterns: ['docs/'])
+        grgit.add (update: false, patterns: ['docs/'])
         grgit.add (update: true, patterns: ['docs/'])
         grgit.commit {
             message = "Updating web pages"
