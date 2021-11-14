@@ -6,3 +6,4 @@ build/
 
 .settings/org.eclipse.buildship.core.prefs
 .classpath
+_config.yml
