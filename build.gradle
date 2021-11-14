@@ -80,32 +80,30 @@ task clonePages() {
 }
 
 
-task copyReports (dependsOn: ['clonePages']) {
-    doLast{
+task copyReports (dependsOn:'clonePages') {
+    doLast {
     copy {
-    from "$buildDir/docs/javadoc"
-    into "$buildDir/gh-pages"
+        from "$buildDir/docs/javadoc"
+        into "$buildDir/gh-pages"
     }
 
     copy {
-    from "$buildDir/reports"
-    into "$buildDir/gh-pages/reports"
+        from "$buildDir/reports"
+        into "$buildDir/gh-pages/reports"
     }
-    }
+}
 }
 
 task updateGHPages (dependsOn: 'copyReports') {
-    group = "Reporting"
     description  'Copies reports to the gh-pages branch in preparation for a future push to GitHub'
     doLast {
         def pagesDir = "$buildDir/gh-pages"
         def grgit = git.open {
             dir = pagesDir + "/.git"
         }
-        grgit.add (update: false, patterns: ['reports/'])
-        grgit.add (update: true, patterns: ['reports/'])
-        grgit.add (update: false, patterns: ['docs/'])
-        grgit.add (update: true, patterns: ['docs/'])
+        grgit.add (update: false, patterns: ['reports/', 'docs'])
+        grgit.add (update: true, patterns: ['reports/', 'docs'])
+       
         grgit.commit {
             message = "Updating web pages"
         }
