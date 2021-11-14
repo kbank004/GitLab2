@@ -53,7 +53,7 @@ task reports(){
 task deployReports(){
     dependsOn 'reports'
     dependsOn 'copyReports'
-    //dependsOn 'updateGHPages'
+    dependsOn 'updateGHPages'
 
 }
 
