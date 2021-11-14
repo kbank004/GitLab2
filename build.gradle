@@ -101,8 +101,8 @@ task updateGHPages (dependsOn: 'copyReports') {
         def grgit = git.open {
             dir = pagesDir + "/.git"
         }
-        grgit.add (update: false, patterns: ['reports/', 'docs'])
-        grgit.add (update: true, patterns: ['reports/', 'docs'])
+        grgit.add (update: false, patterns: ['reports/', 'docs/'])
+        grgit.add (update: true, patterns: ['reports/', 'docs/'])
        
         grgit.commit {
             message = "Updating web pages"
