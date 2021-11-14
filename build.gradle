@@ -83,8 +83,8 @@ task clonePages() {
 task copyReports (dependsOn:'clonePages') {
     doLast {
     copy {
-        from "$buildDir/docs/javadoc"
-        into "$buildDir/gh-pages"
+        from "$buildDir/docs/"
+        into "$buildDir/gh-pages/docs"
     }
 
     copy {
